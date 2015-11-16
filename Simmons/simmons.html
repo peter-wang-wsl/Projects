@@ -8,26 +8,64 @@
 	<script src="libs/box2d.js"></script>
 	
     <script>
-		Crafty.init(500,350, document.getElementById('simmons'));
+var world,
+	PTM_RATIO = 32,
+	w = 600,
+	h = 400,
+	hw = w/2,
+	hh = h/2,
+	mouseJoint,	
+	ctx = this,
+	isMouseDown = false,
+	mouseX,
+	mouseY,
+	mousePVec,
+	selectedBody;
+	
+window.onload = function () {
+    gameInit();
+};
 
-		//Crafty.box2D.init(0, 10, 32, true);  
-		var ball = Crafty.e("2D, Canvas,Color, Box2D,Ball")
-            .attr({ x: 10, y: 15, z:5 , w:25,h:25 })
-            .color("#dddddd")
-			.box2d({
-				bodyType: 'dynamic',
-				density: 1.0,
-				friction: 2,
-				restitution: 0.2,
-				shape: 'circle'
-			}).onContact("Floor",
-						function (data) { 
-						alert("Hi");
-						});
+gameInit = function(){
+	//start crafty
+    Crafty.init(w, h);
+    Crafty.canvas.init();
+	//Init the box2d world, gx = 0, gy = 10
+	Crafty.box2D.init(0, 10, PTM_RATIO, true);
+	world = Crafty.box2D.world;
+	//Start the Box2D debugger
+	Crafty.box2D.showDebugInfo();  
+	
+	Crafty.scene("main", function () {				
+        generateWorld();     
+    });
+	
+	Crafty.scene("main");
+}
+
+generateWorld = function() {	
+	genterateChars();	
+}
+
+genterateChars = function(){	 
+		var fallingElement =  Crafty.e("2D, Canvas, Color, Mouse, Box2D")
+							//.origin("center")
+							.color("#ffffff")
+							.attr({ 
+								x: 0, 
+								y: 0, 
+								h: 0, // 距离顶部的高度
+								w: 50 // 半径
+							})
+							.box2d({
+									bodyType: 'static', // static:固定 dynamic:掉落下来
+									density : 1.0,
+									friction : 2,
+									restitution : 0.2,
+									shape: "circle"
+							});	
+}
 					
-		Crafty.e('Floor, 2D, Canvas, Color')
-			  .attr({x: 0, y: 250, w: 250, h: 10})
-			  .color('green');
     </script>
   </body>
 </html>
