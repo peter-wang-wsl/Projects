@@ -8,63 +8,56 @@
 	<script src="libs/box2d.js"></script>
 	
     <script>
-var world,
-	PTM_RATIO = 32,
-	w = 600,
-	h = 400,
-	hw = w/2,
-	hh = h/2,
-	mouseJoint,	
-	ctx = this,
-	isMouseDown = false,
-	mouseX,
-	mouseY,
-	mousePVec,
-	selectedBody;
-	
-window.onload = function () {
-    gameInit();
-};
+		var world,
+			PTM_RATIO = 1,
+			canvas_w = 1000,			// 背景宽
+			canvas_h = canvas_w,		// 背景高
+			circle_r = (canvas_w / 2),	// 圆心距离顶部的高度
+			circle_h = circle_r			// 半径
+			;
+			
+		window.onload = function () {
+			gameInit();
+		};
 
-gameInit = function(){
-	//start crafty
-    Crafty.init(w, h);
-    Crafty.canvas.init();
-	//Init the box2d world, gx = 0, gy = 10
-	Crafty.box2D.init(0, 10, PTM_RATIO, true);
-	world = Crafty.box2D.world;
-	//Start the Box2D debugger
-	Crafty.box2D.showDebugInfo();  
-	
-	Crafty.scene("main", function () {				
-        generateWorld();     
-    });
-	
-	Crafty.scene("main");
-}
+		gameInit = function(){
+			//start crafty
+			Crafty.init(canvas_w, canvas_h);
+			Crafty.canvas.init();
+			//Init the box2d world, gx = 0, gy = 10
+			Crafty.box2D.init(0,0, PTM_RATIO, true);
+			world = Crafty.box2D.world;
+			//Start the Box2D debugger
+			Crafty.box2D.showDebugInfo();  
+			
+			Crafty.scene("main", function () {				
+				generateWorld();     
+			});
+			
+			Crafty.scene("main");
+		}
 
-generateWorld = function() {	
-	genterateChars();	
-}
+		generateWorld = function() {	
+			genterateChars();	
+		}
 
-genterateChars = function(){	 
-		var fallingElement =  Crafty.e("2D, Canvas, Color, Mouse, Box2D")
-							//.origin("center")
-							.color("#ffffff")
-							.attr({ 
-								x: 0, 
-								y: 0, 
-								h: 0, // 距离顶部的高度
-								w: 50 // 半径
-							})
-							.box2d({
-									bodyType: 'static', // static:固定 dynamic:掉落下来
-									density : 1.0,
-									friction : 2,
-									restitution : 0.2,
-									shape: "circle"
-							});	
-}
+		genterateChars = function(){	 
+				var fallingElement =  Crafty.e("2D, Color, Box2D")
+											.color("#ffffff")
+											.attr({ 
+												x: 0, 
+												y: 0, 
+												h: circle_h,	// 中心距离顶部的高度
+												w: circle_r 	// 半径
+											})
+											.box2d({
+													bodyType: 'static', // static:固定 dynamic:掉落下来
+													density : 1.0,
+													friction : 2,
+													restitution : 0.2,
+													shape: "circle"		// Box2D是无法创建空心球体的，只能通过多边形来近似模拟空心圆
+											});	
+		}
 					
     </script>
   </body>
