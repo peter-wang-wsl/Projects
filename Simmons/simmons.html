@@ -42,15 +42,16 @@
 		}
 
 		genterateChars = function(){	 
-				var fallingElement =  Crafty.e("2D, Color, Box2D")
-											.color("#ffffff")
+				var fallingElement =  Crafty.e("2D, Canvas, Color, Box2D")
+											.origin("center")
+											.color("#ffffff")	// Canvas颜色
 											.attr({ 
 												x: 0, 
 												y: 0, 
 												h: circle_h,	// 中心距离顶部的高度
 												w: circle_r 	// 半径
 											})
-											.box2d({
+											.box2d({					// 在Box2D中，无法设置填充刚体所用的颜色，默认有三中颜色来填充刚体，即红色（表示正在移动的刚体），绿色（表示静止的刚体，没有密度质量的刚体），灰色（表示已经处于休眠状态的刚体）。
 													bodyType: 'static', // static:固定 dynamic:掉落下来
 													density : 1.0,
 													friction : 2,
