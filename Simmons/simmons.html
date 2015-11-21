@@ -3,9 +3,9 @@
   <body>
     <div id="simmons"></div>
 	
-	<script src="libs/Box2dWeb-2.1.a.3.js"></script>  
+	<script src="libs/Box2dWeb-2.1.a.3.js"></script> 	<!--将box2d转为js--> 
 	<script src="libs/crafty.js"></script>
-	<script src="libs/box2d.js"></script>
+	<script src="libs/box2d.js"></script>	<!--集成box2d和crafty-->
 	
     <script>
 		var world,
@@ -49,7 +49,7 @@
 				var fallingElement =  Crafty.e("2D, Canvas, Color, Box2D")
 											.origin("center")	// 居中
 											//.image("img/ball.png", "repeat");	// TODO:使用图片填充
-											.color("#00FF00")	// Canvas颜色
+											.color("#FFFFFF")	// Canvas颜色
 											.attr({ 
 												x: 0, 
 												y: 0, 
@@ -63,7 +63,10 @@
 													restitution : 0.2,
 													shape: "circle"		// Box2D是无法创建空心球体的，只能通过多边形来近似模拟空心圆
 											})
-											
+//				Crafty.e('2D, Canvas, Color, Image')
+//					  .attr({x: 0, y: 250, w: 250, h: 10})
+//					  .color('green')
+//					  .image("img/ball.png", "repeat");					
 		}
 					
     </script>
