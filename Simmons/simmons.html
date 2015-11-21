@@ -9,7 +9,7 @@
 	
     <script>
 		var world,
-			PTM_RATIO = 1,
+			PTM_RATIO = 32,
 			canvas_w = 1000,			// 背景宽
 			canvas_h = canvas_w,		// 背景高
 			circle_r = (canvas_w / 2),	// 圆心距离顶部的高度
@@ -24,8 +24,12 @@
 			//start crafty
 			Crafty.init(canvas_w, canvas_h);
 			Crafty.canvas.init();
-			//Init the box2d world, gx = 0, gy = 10
-			Crafty.box2D.init(0,0, PTM_RATIO, true);
+			<!-- Crafty.background('#000000 url(img/ball.png) no-repeat center center'); -->  // 方案2 变通的实现画圆
+			// The first parameter is the gravity along the x-axis. In this case 0, otherwise we would be pulled to the side.
+			// The second parameter is the gravity along the y-axis. I’ve set it to 10. This will make all physics objects fall down.
+			// The third parameter is the “pixel-to-meter” ratio. I’ve set it to 32. That means that 32 pixels = 1 meter in the game.
+			// The fourth parameter will allow bodies to “sleep” when they are inactive. It’s best to leave this to true for performance. 
+			Crafty.box2D.init(0,0, PTM_RATIO, true); 
 			world = Crafty.box2D.world;
 			//Start the Box2D debugger
 			Crafty.box2D.showDebugInfo();  
@@ -41,10 +45,11 @@
 			genterateChars();	
 		}
 
-		genterateChars = function(){	 
+		genterateChars = function(){
 				var fallingElement =  Crafty.e("2D, Canvas, Color, Box2D")
-											.origin("center")
-											.color("#ffffff")	// Canvas颜色
+											.origin("center")	// 居中
+											//.image("img/ball.png", "repeat");	// TODO:使用图片填充
+											.color("#00FF00")	// Canvas颜色
 											.attr({ 
 												x: 0, 
 												y: 0, 
@@ -52,12 +57,13 @@
 												w: circle_r 	// 半径
 											})
 											.box2d({					// 在Box2D中，无法设置填充刚体所用的颜色，默认有三中颜色来填充刚体，即红色（表示正在移动的刚体），绿色（表示静止的刚体，没有密度质量的刚体），灰色（表示已经处于休眠状态的刚体）。
-													bodyType: 'static', // static:固定 dynamic:掉落下来
+													bodyType: "static", // static:固定 dynamic:掉落下来
 													density : 1.0,
 													friction : 2,
 													restitution : 0.2,
 													shape: "circle"		// Box2D是无法创建空心球体的，只能通过多边形来近似模拟空心圆
-											});	
+											})
+											
 		}
 					
     </script>
