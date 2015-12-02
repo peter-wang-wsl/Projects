@@ -13,13 +13,17 @@
 			canvas_w = 600,				// 背景宽
 			canvas_h = canvas_w,		// 背景高
 			circle_d = 500,				// 圆直径
-			point_d = 25,				// 点直径
+			point_d = 30,				// 点直径
 			point_r = point_d/2,		// 点半径
 			circle_r = circle_d/2,		// 圆直径
-			circle_x = point_r,			// 圆左上角x轴坐标
-			circle_y = circle_x,		// 圆左上角y轴坐标
-			point1_x = circle_r,		// 点1左上角x轴坐标
-			point1_y = 0				// 点1左上角y轴坐标
+			circle_x = 0,				// 圆左上角x轴坐标
+			circle_y = point_r,			// 圆左上角y轴坐标
+			point1_x = circle_r-point_r,// 点1左上角x轴坐标
+			point1_y = 0,				// 点1左上角y轴坐标
+			sin60 = 0.886025,
+			sin30 = 0.5,
+			point2_x = circle_r*(1-sin60)-point_r,	// 点2左上角x轴坐标
+			point2_y = circle_r*(1-sin30)			// 点2左上角y轴坐标
 			;
 			
 		window.onload = function () {
@@ -53,43 +57,32 @@
 		}
 
 		genterateShape = function(){
-				// 实现模型：在正方形框中画圆
-				var circle =  Crafty.e("2D, Canvas, Color, Box2D")
-											.origin("center")	// 居中
-											//.image("img/ball.png", "repeat");	// TODO:使用图片填充
-											.color("#FFFFFF")	// Canvas颜色
-											.attr({ 
-												x: circle_x, 	// 左上角x轴坐标
-												y: circle_y, 	// 左上角y轴坐标
-												h: circle_d,	// 矩形高
-												w: circle_d 	// 矩形宽
-											})
-											.box2d({					// 在Box2D中，无法设置填充刚体所用的颜色，默认有三中颜色来填充刚体，即红色（表示正在移动的刚体），绿色（表示静止的刚体，没有密度质量的刚体），灰色（表示已经处于休眠状态的刚体）。
-													bodyType: "static", // static:固定 dynamic:掉落下来
-													density : 1.0,
-													friction : 2,
-													restitution : 0.2,
-													shape: "circle"		// Box2D是无法创建空心球体的，只能通过多边形来近似模拟空心圆
-											});
-				// 在圆心以上圆半径高度的圆周上画个小圆点							
-				var point1 =  Crafty.e("2D, Canvas, Color, Box2D")
-							.origin("center")	
-							.color("#FFFFFF")	
-							.attr({ 
-								x: point1_x, 
-								y: point1_y, 
-								h: point_d,	
-								w: point_d 	
-							})
-							.box2d({					
-									bodyType: "static", 
-									density : 1.0,
-									friction : 2,
-									restitution : 0.2,
-									shape: "circle"		
-							});
+				var circle = generateCircle(circle_x, circle_y, circle_d, circle_d);
 				
-
+				// 在圆的六等分点上画圆点						
+				var point1 = generateCircle(point1_x, point1_y, point_d, point_d);
+				
+				var point2 = generateCircle(point2_x, point2_y, point_d, point_d);
+		}
+		
+		generateCircle = function(x, y, h, w){
+				// 实现模型：在正方形框中画圆
+				return  Crafty.e("2D, Canvas, Color, Box2D")
+								.origin("center")	// 居中
+								.color("#FFFFFF")	// Canvas颜色
+								.attr({ 
+									x: x, 	// 左上角x轴坐标
+									y: y, 	// 左上角y轴坐标
+									h: h,	// 矩形高
+									w: w 	// 矩形宽
+								})
+								.box2d({					// 在Box2D中，无法设置填充刚体所用的颜色，默认有三中颜色来填充刚体，即红色（表示正在移动的刚体），绿色（表示静止的刚体，没有密度质量的刚体），灰色（表示已经处于休眠状态的刚体）。
+										bodyType: "static", // static:固定 dynamic:掉落下来
+										density : 1.0,
+										friction : 2,
+										restitution : 0.2,
+										shape: "circle"		// Box2D是无法创建空心球体的，只能通过多边形来近似模拟空心圆
+								});
 		}
 					
     </script>
