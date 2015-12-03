@@ -51,7 +51,7 @@ Crafty.c("Box2D", {
 	* this will create a b2Body and make a fixture with the default, the other params of the object,
 	* are the same of the method .addFixture
 	* 
-	* You can pass also a custom b2BodyDef using the argument .bodyDef
+	* You can pass also a custom b2BodyDef using the argument .bodyDef  【WSL:IMPORT】
 	* ie:
 	* var customDef = new b2BodyDef;
 	* customDef.type = "dynamic";
@@ -116,9 +116,9 @@ Crafty.c("Box2D", {
 	* @comp Box2D
 	* @sign public void .addFixture(Object fixture)
 	* @param fixture - Object with the B2FixtureDef or the propierties to make
-	*	a B2Fixture (Density, Friction, Restitution, Shape, etc)
+	*	a B2Fixture (Density, Friction, Restitution, Shape, etc) 【WSL:IMPORT】
 	*
-	* Add a fixture to te body of the entity, you can pass a complete B2FixtureDef for more control
+	* Add a fixture to the body of the entity, you can pass a complete B2FixtureDef for more control
 	* ie: .addFixture({fixDef: B2FixtureDef}) or pass the propierties what you want
     * ie: .addFixture(
 	*				  {
@@ -149,7 +149,7 @@ Crafty.c("Box2D", {
 			fixDef.density = (!isNaN(setup.density)) ? setup.density : 1;
 			fixDef.friction = (!isNaN(setup.friction)) ? setup.friction : 0.5;
 			fixDef.restitution = (!isNaN(setup.restitution)) ? setup.restitution : 0.2;
-      fixDef.isSensor = Boolean(setup.isSensor);
+      fixDef.isSensor = Boolean(setup.isSensor);	//【WSL false:发生碰撞后，由Box2D模拟物理碰撞后的反弹或变向运动 true:刚体只进行碰撞检测，而不模拟碰撞后的物理运动。此时，我们就可以自定义刚体处理方式】
 
 			// Add some filter stuff
 			fixDef.filter = this._addFilterToFixture(setup);
@@ -175,8 +175,8 @@ Crafty.c("Box2D", {
 
 		var filter = new b2FilterData();
 
-		filter.categoryBits = (!isNaN(setup.categoryBits)) ? setup.categoryBits : 0x0001;
-		filter.maskBits = (!isNaN(setup.maskBits)) ? setup.maskBits : 0xffff;
+		filter.categoryBits = (!isNaN(setup.categoryBits)) ? setup.categoryBits : 0x0001; //【WSL:定义自己所属的碰撞种类】
+		filter.maskBits = (!isNaN(setup.maskBits)) ? setup.maskBits : 0xffff;	//【WSL:指定碰撞种类,一个body要与其它种群的body发生碰撞，则其maskBits值应该为其它种群的body的categoryBits之和】
 		filter.groupIndex = (!isNaN(setup.groupIndex)) ? setup.groupIndex : 0;
 
 		return filter;
@@ -234,7 +234,7 @@ Crafty.c("Box2D", {
 	* @comp Box2D
 	* @sign public Boolean/Array contact(String component)
 	* @param component - Check collision with entities that has this component
-	* @return `false` if no collision or the param component don't had the Box2D comp. If a collision is detected, returns an Array of objects that are colliding.
+	* @return `false` if no collision or the param component don't had the Box2D componet. If a collision is detected, returns an Array of objects that are colliding.
 	* Takes an argument for a component to test collision for. If a collision is found, an array of
 	* every object in collision along with 'contact' info.
 	*
@@ -326,7 +326,7 @@ Crafty.extend({
 		* @param ptm_ratio - pixel-to-meter ratio
 		* @param doSleep permit the Box2D world sleep
 		* Creates a b2World element and bind the Box2D 'step' to Crafty EnterFrame funct
-		* Must be called before any entities with the Box2D component can be drawn.
+		* Must be called before any entities with the Box2D component can be drawn. 【WSL:IMPORT】
 		*
 		* This method will automatically be called if no `Crafty.canvas.b2World` is
 		* found.
