@@ -22,9 +22,9 @@
 			point1_y = 0,				// 点1左上角y轴坐标
 			sin60 = 0.886025,
 			sin30 = 0.5,
-			point2_x = circle_r*(1-sin60)-point_r,	// 点2左上角x轴坐标
-			point2_y = circle_r*(1-sin30),			// 点2左上角y轴坐标
-			line1_v2_x = circle_r*sin60*(-1)+point_r	// 线1端点x轴坐标
+			point2_x = circle_r*(1-sin60)-point_r,		// 点2左上角x轴坐标
+			point2_y = circle_r*(1-sin30),				// 点2左上角y轴坐标
+			line1_v2_x = circle_r*sin60*(-1)+point_r,	// 线1端点x轴坐标
 			;
 			
 		window.onload = function () {
@@ -61,9 +61,9 @@
 				var circle = generateCircle(circle_x, circle_y, circle_d, circle_d);
 				
 				// 在圆的六等分点上画圆点						
-				var point1 = generatePoint(point1_x, point1_y, point_d, point_d);
+				var point1 = generatePoint(point1_x, point1_y, point_d, point_d, 'point1');
 				
-				var point2 = generatePoint(point2_x, point2_y, point_d, point_d);
+				var point2 = generatePoint(point2_x, point2_y, point_d, point_d,'point2');
 	
 				// TODO:鼠标点击画线
 				// 以point1的x,y为（0，0）画连接point2的线
@@ -106,12 +106,13 @@
 								});
 		}
 		
-		generatePoint = function(x, y, h, w){
+		generatePoint = function(x, y, h, w, key){
 				// 实现模型：在正方形框中画圆
 				return  Crafty.e("2D, Canvas, Color, Box2D, Mouse")
 								.origin("center")	// 居中
 								.color("#FFFFFF")	// Canvas颜色
 								.attr({ 
+									key : key,
 									x: x, 	// 左上角x轴坐标
 									y: y, 	// 左上角y轴坐标
 									h: h,	// 矩形高
@@ -124,7 +125,11 @@
 										restitution : 0.2,
 										shape: "circle"		// Box2D是无法创建空心球体的，只能通过多边形来近似模拟空心圆
 								})
-								.bind('Click', function(MouseEvent){alert('clicked', MouseEvent);});
+								.bind('Click', function(e){ // e:MouseEvent 【PROBLEM:右键点击触发不了】
+															if( e.mouseButton == Crafty.mouseButtons.LEFT ){
+																alert(this.key);
+															}
+														  });
 		}
 		
 
