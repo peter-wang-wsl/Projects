@@ -23,7 +23,8 @@
 			sin60 = 0.886025,
 			sin30 = 0.5,
 			point2_x = circle_r*(1-sin60)-point_r,	// 点2左上角x轴坐标
-			point2_y = circle_r*(1-sin30)			// 点2左上角y轴坐标
+			point2_y = circle_r*(1-sin30),			// 点2左上角y轴坐标
+			line1_v2_x = circle_r*sin60*(-1)+point_r	// 线1端点x轴坐标
 			;
 			
 		window.onload = function () {
@@ -63,6 +64,25 @@
 				var point1 = generateCircle(point1_x, point1_y, point_d, point_d);
 				
 				var point2 = generateCircle(point2_x, point2_y, point_d, point_d);
+				
+				// 以point1的x,y为（0，0）画连接point2的线
+				point1.addFixture(
+						{
+							bodyType: 'static',
+							density : 1.0,
+							friction : 10,
+							restitution : 0,
+							shape: [
+										[point_r, 0],					// 线1左上角坐标
+										[point_r, point_d],				// 线1右上角坐标
+										[line1_v2_x, point2_y+point_d],	// 线1右下角坐标
+										[line1_v2_x, point2_y]			// 线1左下角坐标
+									]
+							
+						}
+				);
+				
+				
 		}
 		
 		generateCircle = function(x, y, h, w){
@@ -84,6 +104,10 @@
 										shape: "circle"		// Box2D是无法创建空心球体的，只能通过多边形来近似模拟空心圆
 								});
 		}
+		
+
+		
+
 					
     </script>
   </body>
