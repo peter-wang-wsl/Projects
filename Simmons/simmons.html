@@ -61,10 +61,11 @@
 				var circle = generateCircle(circle_x, circle_y, circle_d, circle_d);
 				
 				// 在圆的六等分点上画圆点						
-				var point1 = generateCircle(point1_x, point1_y, point_d, point_d);
+				var point1 = generatePoint(point1_x, point1_y, point_d, point_d);
 				
-				var point2 = generateCircle(point2_x, point2_y, point_d, point_d);
-				
+				var point2 = generatePoint(point2_x, point2_y, point_d, point_d);
+	
+				// TODO:鼠标点击画线
 				// 以point1的x,y为（0，0）画连接point2的线
 				point1.addFixture(
 						{
@@ -103,6 +104,27 @@
 										restitution : 0.2,
 										shape: "circle"		// Box2D是无法创建空心球体的，只能通过多边形来近似模拟空心圆
 								});
+		}
+		
+		generatePoint = function(x, y, h, w){
+				// 实现模型：在正方形框中画圆
+				return  Crafty.e("2D, Canvas, Color, Box2D, Mouse")
+								.origin("center")	// 居中
+								.color("#FFFFFF")	// Canvas颜色
+								.attr({ 
+									x: x, 	// 左上角x轴坐标
+									y: y, 	// 左上角y轴坐标
+									h: h,	// 矩形高
+									w: w 	// 矩形宽
+								})
+								.box2d({					// 在Box2D中，无法设置填充刚体所用的颜色，默认有三中颜色来填充刚体，即红色（表示正在移动的刚体），绿色（表示静止的刚体，没有密度质量的刚体），灰色（表示已经处于休眠状态的刚体）。
+										bodyType: "static", // static:固定 dynamic:掉落下来
+										density : 1.0,
+										friction : 2,
+										restitution : 0.2,
+										shape: "circle"		// Box2D是无法创建空心球体的，只能通过多边形来近似模拟空心圆
+								})
+								.bind('Click', function(MouseEvent){alert('clicked', MouseEvent);});
 		}
 		
 
