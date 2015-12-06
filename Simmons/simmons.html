@@ -25,6 +25,8 @@
 			point2_x = circle_r*(1-sin60)-point_r,		// 点2左上角x轴坐标
 			point2_y = circle_r*(1-sin30),				// 点2左上角y轴坐标
 			line1_v2_x = circle_r*sin60*(-1)+point_r,	// 线1端点x轴坐标
+			clicked_ponits = new Array(),				// 保存最近点击的两个point信息
+			CLICKED_MAX_PONITS = 2						
 			;
 			
 		window.onload = function () {
@@ -127,9 +129,19 @@
 								})
 								.bind('Click', function(e){ // e:MouseEvent 【PROBLEM:右键点击触发不了】
 															if( e.mouseButton == Crafty.mouseButtons.LEFT ){
-																alert(this.key);
+																clicked_ponits[clicked_ponits.length]=this;
+																
+																if(CLICKED_MAX_PONITS == clicked_ponits.length){
+																	generateLine(clicked_ponits[0],clicked_ponits[1]);
+																	// 清空数组
+																	clicked_ponits.splice(0,clicked_ponits.length);
+																}
 															}
 														  });
+		}
+		
+		generateLine=function(point_1, point_2){
+			alert(point_1.key)
 		}
 		
 
