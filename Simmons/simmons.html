@@ -68,22 +68,7 @@
 				var point2 = generatePoint(point2_x, point2_y, point_d, point_d,'point2');
 	
 				// TODO:鼠标点击画线
-				// 以point1的x,y为（0，0）画连接point2的线
-				point1.addFixture(
-						{
-							bodyType: 'static',
-							density : 1.0,
-							friction : 10,
-							restitution : 0,
-							shape: [
-										[point_r, 0],					// 线1左上角坐标
-										[point_r, point_d],				// 线1右上角坐标
-										[line1_v2_x, point2_y+point_d],	// 线1右下角坐标
-										[line1_v2_x, point2_y]			// 线1左下角坐标
-									]
-							
-						}
-				);
+
 				
 				
 		}
@@ -140,8 +125,31 @@
 														  });
 		}
 		
-		generateLine=function(point_1, point_2){
-			alert(point_1.key)
+		generateLine=function(point1, point2){
+			// 线的起点
+			var point;
+			// 线描画原则：从上往下画，从右往左画
+			if(point1.x >= point2.x && point1.y <= point2.y){
+				point = point1;
+			}else{
+				point = point2;
+			}
+			// 以point的x,y为（0，0）画连接另一个point的线
+			point.addFixture(
+					{
+						bodyType: 'static',
+						density : 1.0,
+						friction : 10,
+						restitution : 0,
+						shape: [
+									[point_r, point.y],			// 线1左上角坐标
+									[point_r, point.y + point_d],				// 线1右上角坐标
+									[line1_v2_x, point2_y+point_d],	// 线1右下角坐标
+									[line1_v2_x, point2_y]			// 线1左下角坐标
+								]
+						
+					}
+			);
 		}
 		
 
