@@ -126,33 +126,38 @@
 		}
 		
 		generateLine=function(point1, point2){
-			// 线的起点
-			var point;
-			// 线描画原则：从上往下画，从右往左画
-			if(point1.x >= point2.x && point1.y <= point2.y){
-				// 实现模型：在正方形框中画圆
-				Crafty.e("2D, Canvas, Color, Box2D")
-						.origin("center")	// 居中
-						.color("#FFFFFF")	// Canvas颜色
-						.attr({ 
-							x: 0, 	// 左上角x轴坐标
-							y: 0 	// 左上角y轴坐标
-						})
-						.box2d({					// 在Box2D中，无法设置填充刚体所用的颜色，默认有三中颜色来填充刚体，即红色（表示正在移动的刚体），绿色（表示静止的刚体，没有密度质量的刚体），灰色（表示已经处于休眠状态的刚体）。
-								bodyType: "static", // static:固定 dynamic:掉落下来
-								density : 1.0,
-								friction : 2,
-								restitution : 0.2,
-								shape: [
-									[point1.x+point_r, point1.y],			// 线1左上角坐标
-									[point1.x+point_r, point1.y+point_d],				// 线1右上角坐标
-									[point2.x+point_r, point2.y+point_d],	// 线1右下角坐标
-									[point2.x+point_r, point2.y]			// 线1左下角坐标
-								]
-						});
-			}else{
-				alert('TODO');
+			// 两次点击同一个点，则不画线
+			if(point1 == point2){
+				return;
 			}
+			var tmp_point;
+			// 线描画原则：从上往下画，从右往左画
+			if(point1.x <= point2.x && point1.y >= point2.y){
+				// 交换point1和point2
+				tmp_point = point1;
+				point1 = point2;
+				point2 = tmp_point;
+			}
+			
+			Crafty.e("2D, Canvas, Color, Box2D")
+					.origin("center")	// 居中
+					.color("#FFFFFF")	// Canvas颜色
+					.attr({ 
+						x: 0, 	// 左上角x轴坐标
+						y: 0 	// 左上角y轴坐标
+					})
+					.box2d({					// 在Box2D中，无法设置填充刚体所用的颜色，默认有三中颜色来填充刚体，即红色（表示正在移动的刚体），绿色（表示静止的刚体，没有密度质量的刚体），灰色（表示已经处于休眠状态的刚体）。
+							bodyType: "static", // static:固定 dynamic:掉落下来
+							density : 1.0,
+							friction : 2,
+							restitution : 0.2,
+							shape: [
+								[point1.x+point_r, point1.y],			// 线1左上角坐标
+								[point1.x+point_r, point1.y+point_d],				// 线1右上角坐标
+								[point2.x+point_r, point2.y+point_d],	// 线1右下角坐标
+								[point2.x+point_r, point2.y]			// 线1左下角坐标
+							]
+					});
 
 		}
 		
